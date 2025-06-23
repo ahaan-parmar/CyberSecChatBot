@@ -23,50 +23,99 @@ st.set_page_config(
 )
 
 # Custom CSS
-st.markdown("""
-<style>
-    .main-header {
-        font-size: 2.5rem;
-        color: #1f77b4;
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-    .chat-message {
-        padding: 1rem;
-        border-radius: 0.5rem;
-        margin: 1rem 0;
-    }
-    .user-message {
-        background-color: #e8f4fd;
-        border-left: 4px solid #1f77b4;
-    }
-    .bot-message {
-        background-color: #f0f8f0;
-        border-left: 4px solid #28a745;
-    }
-    .confidence-high {
-        color: #28a745;
-        font-weight: bold;
-    }
-    .confidence-medium {
-        color: #ffc107;
-        font-weight: bold;
-    }
-    .confidence-low {
-        color: #dc3545;
-        font-weight: bold;
-    }
-    .source-tag {
-        display: inline-block;
-        background-color: #6c757d;
-        color: white;
-        padding: 0.2rem 0.5rem;
-        border-radius: 0.3rem;
-        margin: 0.1rem;
-        font-size: 0.8rem;
-    }
-</style>
-""", unsafe_allow_html=True)
+LIGHT_MODE_CSS = """
+.main-header {
+    font-size: 2.5rem;
+    color: #1f77b4;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.chat-message {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin: 1rem 0;
+}
+.user-message {
+    background-color: #e8f4fd;
+    border-left: 4px solid #1f77b4;
+}
+.bot-message {
+    background-color: #f0f8f0;
+    border-left: 4px solid #28a745;
+}
+.confidence-high {
+    color: #28a745;
+    font-weight: bold;
+}
+.confidence-medium {
+    color: #ffc107;
+    font-weight: bold;
+}
+.confidence-low {
+    color: #dc3545;
+    font-weight: bold;
+}
+.source-tag {
+    display: inline-block;
+    background-color: #6c757d;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.3rem;
+    margin: 0.1rem;
+    font-size: 0.8rem;
+}
+"""
+
+DARK_MODE_CSS = """
+body {
+    background-color: #0e1117;
+    color: #e0e0e0;
+}
+.main-header {
+    font-size: 2.5rem;
+    color: #90caf9;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.chat-message {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin: 1rem 0;
+}
+.user-message {
+    background-color: #1f2d3d;
+    border-left: 4px solid #90caf9;
+}
+.bot-message {
+    background-color: #272822;
+    border-left: 4px solid #50fa7b;
+}
+.confidence-high {
+    color: #50fa7b;
+    font-weight: bold;
+}
+.confidence-medium {
+    color: #ffe082;
+    font-weight: bold;
+}
+.confidence-low {
+    color: #ff5252;
+    font-weight: bold;
+}
+.source-tag {
+    display: inline-block;
+    background-color: #6c757d;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.3rem;
+    margin: 0.1rem;
+    font-size: 0.8rem;
+}
+"""
+
+def apply_theme(dark: bool = False):
+    css = DARK_MODE_CSS if dark else LIGHT_MODE_CSS
+    st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
 
 @st.cache_resource
 def initialize_chatbot():
@@ -261,7 +310,13 @@ def create_knowledge_base_info(chatbot: CybersecurityChatbot):
 
 def main():
     """Main Streamlit application"""
-    
+
+    # Theme toggle
+    if 'dark_mode' not in st.session_state:
+        st.session_state.dark_mode = False
+
+    apply_theme(st.session_state.dark_mode)
+
     # Header
     st.markdown('<h1 class="main-header">🛡️ Cybersecurity Chatbot</h1>', unsafe_allow_html=True)
     st.markdown("**Your AI-powered cybersecurity knowledge assistant**")
@@ -274,6 +329,13 @@ def main():
     # Sidebar
     with st.sidebar:
         st.header("🔧 Controls")
+
+        # Theme switch
+        dark = st.checkbox("🌙 Dark Mode", value=st.session_state.dark_mode)
+        if dark != st.session_state.dark_mode:
+            st.session_state.dark_mode = dark
+            apply_theme(dark)
+            st.rerun()
         
         # Clear conversation
         if st.button("🗑️ Clear Conversation"):
