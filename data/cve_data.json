@@ -1,0 +1,165 @@
+[
+  {
+    "id": "CVE-2023-0001",
+    "description": "SQL injection vulnerability in login authentication system allows remote attackers to execute arbitrary SQL commands via crafted input to the username parameter.",
+    "cvss_score": 9.8,
+    "severity": "Critical",
+    "published_date": "2023-01-15",
+    "affected_products": [
+      "WebApp Pro 2.1.0",
+      "WebApp Pro 2.0.x",
+      "Enterprise Suite 1.5"
+    ],
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0001",
+      "https://example.com/security-advisory-001"
+    ],
+    "cwe_id": "CWE-89",
+    "attack_vector": "Network",
+    "attack_complexity": "Low",
+    "privileges_required": "None",
+    "user_interaction": "None"
+  },
+  {
+    "id": "CVE-2023-0002", 
+    "description": "Cross-site scripting (XSS) vulnerability in user profile page allows attackers to inject malicious scripts via the bio field.",
+    "cvss_score": 7.2,
+    "severity": "High",
+    "published_date": "2023-01-20",
+    "affected_products": [
+      "Social Platform 3.2.1",
+      "Social Platform 3.1.x"
+    ],
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0002",
+      "https://socialplatform.com/security-update"
+    ],
+    "cwe_id": "CWE-79",
+    "attack_vector": "Network", 
+    "attack_complexity": "Low",
+    "privileges_required": "Low",
+    "user_interaction": "Required"
+  },
+  {
+    "id": "CVE-2023-0003",
+    "description": "Buffer overflow in image processing library allows remote code execution through maliciously crafted PNG files.",
+    "cvss_score": 8.8,
+    "severity": "High",
+    "published_date": "2023-02-01",
+    "affected_products": [
+      "ImageLib 4.5.2",
+      "ImageLib 4.4.x",
+      "Photo Editor Suite 2.1"
+    ],
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0003",
+      "https://imagelib.org/cve-2023-0003"
+    ],
+    "cwe_id": "CWE-120",
+    "attack_vector": "Network",
+    "attack_complexity": "Low", 
+    "privileges_required": "None",
+    "user_interaction": "Required"
+  },
+  {
+    "id": "CVE-2023-0004",
+    "description": "Privilege escalation vulnerability in system service allows local users to gain root privileges through race condition.",
+    "cvss_score": 7.8,
+    "severity": "High",
+    "published_date": "2023-02-10",
+    "affected_products": [
+      "Linux Kernel 5.15.x",
+      "Ubuntu 22.04 LTS",
+      "CentOS 8.x"
+    ],
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0004",
+      "https://kernel.org/security/cve-2023-0004"
+    ],
+    "cwe_id": "CWE-362",
+    "attack_vector": "Local",
+    "attack_complexity": "High",
+    "privileges_required": "Low", 
+    "user_interaction": "None"
+  },
+  {
+    "id": "CVE-2023-0005",
+    "description": "Directory traversal vulnerability in file upload functionality allows attackers to write files outside intended directory.",
+    "cvss_score": 6.5,
+    "severity": "Medium",
+    "published_date": "2023-02-15",
+    "affected_products": [
+      "File Manager Pro 1.8.0",
+      "Cloud Storage API 2.3.x"
+    ],
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0005",
+      "https://filemanager.com/advisory-005"
+    ],
+    "cwe_id": "CWE-22",
+    "attack_vector": "Network",
+    "attack_complexity": "Low",
+    "privileges_required": "Low",
+    "user_interaction": "None"
+  },
+  {
+    "id": "CVE-2023-0006",
+    "description": "Information disclosure vulnerability in API endpoint exposes sensitive user data without proper authentication checks.",
+    "cvss_score": 5.3,
+    "severity": "Medium",
+    "published_date": "2023-03-01",
+    "affected_products": [
+      "API Gateway 3.1.2",
+      "Microservices Platform 1.9.x"
+    ],
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0006",
+      "https://api-gateway.io/cve-2023-0006"
+    ],
+    "cwe_id": "CWE-200",
+    "attack_vector": "Network",
+    "attack_complexity": "Low",
+    "privileges_required": "None",
+    "user_interaction": "None"
+  },
+  {
+    "id": "CVE-2023-0007",
+    "description": "Remote code execution vulnerability in template engine allows attackers to execute arbitrary code through server-side template injection.",
+    "cvss_score": 9.6,
+    "severity": "Critical",
+    "published_date": "2023-03-10",
+    "affected_products": [
+      "Template Engine Plus 2.4.1",
+      "Web Framework Pro 4.2.x"
+    ],
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0007",
+      "https://templateengine.org/security-alert"
+    ],
+    "cwe_id": "CWE-94",
+    "attack_vector": "Network",
+    "attack_complexity": "Low",
+    "privileges_required": "Low",
+    "user_interaction": "None"
+  },
+  {
+    "id": "CVE-2023-0008",
+    "description": "Denial of service vulnerability in XML parser allows attackers to consume excessive resources through XML entity expansion attacks.",
+    "cvss_score": 6.5,
+    "severity": "Medium",
+    "published_date": "2023-03-20",
+    "affected_products": [
+      "XML Parser Library 1.6.3",
+      "Document Processing Suite 3.1.x"
+    ],
+    "references": [
+      "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-0008",
+      "https://xmlparser.com/cve-2023-0008"
+    ],
+    "cwe_id": "CWE-776",
+    "attack_vector": "Network",
+    "attack_complexity": "Low",
+    "privileges_required": "None",
+    "user_interaction": "Required"
+  }
+]

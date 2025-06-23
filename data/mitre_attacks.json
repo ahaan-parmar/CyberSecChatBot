@@ -1,0 +1,168 @@
+[
+  {
+    "id": "T1055",
+    "name": "Process Injection",
+    "tactic": "Defense Evasion",
+    "description": "Adversaries may inject code into processes in order to evade process-based defenses as well as possibly elevate privileges. Process injection is a method of executing arbitrary code in the address space of a separate live process.",
+    "detection": "Monitoring for suspicious process access patterns and unusual memory allocation behavior. Look for processes making unexpected API calls like OpenProcess, VirtualAllocEx, WriteProcessMemory, and CreateRemoteThread.",
+    "mitigation": "Implement application control solutions that restrict execution based on process reputation and behavior. Use endpoint detection and response (EDR) tools to monitor process injection techniques.",
+    "platforms": ["Windows", "macOS", "Linux"],
+    "data_sources": ["Process", "API Monitoring", "DLL Monitoring"],
+    "sub_techniques": [
+      "T1055.001 - Dynamic-link Library Injection",
+      "T1055.002 - Portable Executable Injection", 
+      "T1055.003 - Thread Execution Hijacking",
+      "T1055.004 - Asynchronous Procedure Call",
+      "T1055.005 - Thread Local Storage"
+    ]
+  },
+  {
+    "id": "T1078",
+    "name": "Valid Accounts",
+    "tactic": "Initial Access",
+    "description": "Adversaries may obtain and abuse credentials of existing accounts as a means of gaining Initial Access, Persistence, Privilege Escalation, or Defense Evasion. Compromised credentials may be used to bypass access controls placed on various resources.",
+    "detection": "Monitor for account logon behavior that may reveal attempts to access valid accounts. Look for unusual login times, locations, and patterns. Correlate authentication logs with endpoint activity.",
+    "mitigation": "Implement multi-factor authentication, regularly audit account permissions, monitor privileged accounts, and establish baseline user behavior patterns to detect anomalies.",
+    "platforms": ["Windows", "macOS", "Linux", "Azure AD", "Office 365", "SaaS", "IaaS", "Google Workspace"],
+    "data_sources": ["Authentication Logs", "Logon Session", "User Account"],
+    "sub_techniques": [
+      "T1078.001 - Default Accounts",
+      "T1078.002 - Domain Accounts",
+      "T1078.003 - Local Accounts", 
+      "T1078.004 - Cloud Accounts"
+    ]
+  },
+  {
+    "id": "T1027",
+    "name": "Obfuscated Files or Information",
+    "tactic": "Defense Evasion",
+    "description": "Adversaries may attempt to make an executable or file difficult to discover or analyze by encrypting, encoding, or otherwise obfuscating its contents on the system or in transit.",
+    "detection": "Monitor for execution of utilities that can be used to decode or deobfuscate information. Look for files with high entropy that may indicate encryption or encoding.",
+    "mitigation": "Consider implementing application control and script blocking solutions. Use endpoint detection tools that can analyze and detect obfuscated content.",
+    "platforms": ["Windows", "macOS", "Linux"],
+    "data_sources": ["File", "Process", "Network Traffic", "Binary"],
+    "sub_techniques": [
+      "T1027.001 - Binary Padding",
+      "T1027.002 - Software Packing",
+      "T1027.003 - Steganography",
+      "T1027.004 - Compile After Delivery",
+      "T1027.005 - Indicator Removal from Tools"
+    ]
+  },
+  {
+    "id": "T1136",
+    "name": "Create Account",
+    "tactic": "Persistence",
+    "description": "Adversaries may create an account to maintain access to victim systems. With a sufficient level of access, creating such accounts may be used to establish secondary credentialed access that do not require persistent remote access tools to be deployed on the system.",
+    "detection": "Monitor for processes and command-line parameters associated with account creation. Collect data on account creation within a network and alert on suspicious account creation activity.",
+    "mitigation": "Limit the ability of users to create accounts through group policy or similar mechanisms. Monitor account creation activity and implement approval workflows for new accounts.",
+    "platforms": ["Windows", "macOS", "Linux", "Azure AD", "Office 365", "Google Workspace"],
+    "data_sources": ["User Account", "Command", "Process"],
+    "sub_techniques": [
+      "T1136.001 - Local Account",
+      "T1136.002 - Domain Account",
+      "T1136.003 - Cloud Account"
+    ]
+  },
+  {
+    "id": "T1562",
+    "name": "Impair Defenses",
+    "tactic": "Defense Evasion",
+    "description": "Adversaries may maliciously modify components of a victim's environment in order to hinder or disable defensive mechanisms. This not only involves impairing preventative defenses but also detection capabilities.",
+    "detection": "Monitor for changes to security tools and defensive mechanisms. Look for processes that attempt to disable or modify security software, logging, or monitoring capabilities.",
+    "mitigation": "Implement application control to prevent unauthorized changes to security tools. Use centralized logging and monitoring that cannot be easily disabled by local administrators.",
+    "platforms": ["Windows", "macOS", "Linux", "Containers"],
+    "data_sources": ["Service", "Windows Registry", "Command", "Process", "Driver"],
+    "sub_techniques": [
+      "T1562.001 - Disable or Modify Tools",
+      "T1562.002 - Disable Windows Event Logging",
+      "T1562.003 - Impair Command History Logging",
+      "T1562.004 - Disable or Modify System Firewall",
+      "T1562.006 - Indicator Blocking"
+    ]
+  },
+  {
+    "id": "T1003",
+    "name": "OS Credential Dumping",
+    "tactic": "Credential Access",
+    "description": "Adversaries may attempt to dump credentials to obtain account login and credential material, normally in the form of a hash or a clear text password, from the operating system and software.",
+    "detection": "Monitor for unexpected processes accessing LSASS memory or other credential stores. Look for tools like Mimikatz or unusual access to SAM/SECURITY registry hives.",
+    "mitigation": "Enable LSA Protection and Credential Guard on Windows systems. Restrict administrative privileges and monitor privileged account usage.",
+    "platforms": ["Windows", "macOS", "Linux"],
+    "data_sources": ["Process", "File", "API Monitoring", "PowerShell Logs"],
+    "sub_techniques": [
+      "T1003.001 - LSASS Memory",
+      "T1003.002 - Security Account Manager",
+      "T1003.003 - NTDS",
+      "T1003.004 - LSA Secrets",
+      "T1003.005 - Cached Domain Credentials"
+    ]
+  },
+  {
+    "id": "T1071",
+    "name": "Application Layer Protocol",
+    "tactic": "Command and Control",
+    "description": "Adversaries may communicate using OSI application layer protocols to avoid detection by blending in with existing traffic. Commands or files may be embedded within the protocol traffic between client and server.",
+    "detection": "Monitor network traffic for unusual patterns or protocols. Look for communication to known command and control infrastructure or suspicious domains.",
+    "mitigation": "Implement network segmentation and monitoring. Use application-layer inspection and filtering to detect malicious traffic patterns.",
+    "platforms": ["Windows", "macOS", "Linux"],
+    "data_sources": ["Network Traffic", "Packet Capture"],
+    "sub_techniques": [
+      "T1071.001 - Web Protocols",
+      "T1071.002 - File Transfer Protocols",
+      "T1071.003 - Mail Protocols",
+      "T1071.004 - DNS"
+    ]
+  },
+  {
+    "id": "T1059",
+    "name": "Command and Scripting Interpreter",
+    "tactic": "Execution",
+    "description": "Adversaries may abuse command and script interpreters to execute commands, scripts, or binaries. These interfaces and languages provide ways of interacting with computer systems and are a common feature across many different platforms.",
+    "detection": "Monitor for execution of interpreters and scripts. Look for unusual command-line arguments or script content that may indicate malicious activity.",
+    "mitigation": "Implement application control and script blocking policies. Monitor and log script execution activity, especially for administrative scripts.",
+    "platforms": ["Windows", "macOS", "Linux"],
+    "data_sources": ["Process", "Command", "PowerShell Logs"],
+    "sub_techniques": [
+      "T1059.001 - PowerShell",
+      "T1059.002 - AppleScript",
+      "T1059.003 - Windows Command Shell",
+      "T1059.004 - Unix Shell",
+      "T1059.005 - Visual Basic"
+    ]
+  },
+  {
+    "id": "T1021",
+    "name": "Remote Services",
+    "tactic": "Lateral Movement",
+    "description": "Adversaries may use Valid Accounts to log into a service specifically designed to accept remote connections, such as telnet, SSH, and VNC. The adversary may then perform actions as the logged-on user.",
+    "detection": "Monitor for logon behavior across remote services, especially from external IP addresses or unusual locations. Look for authentication anomalies and lateral movement patterns.",
+    "mitigation": "Implement network segmentation, multi-factor authentication, and disable unnecessary remote services. Monitor remote access activity and implement just-in-time access controls.",
+    "platforms": ["Windows", "macOS", "Linux"],
+    "data_sources": ["Authentication Logs", "Network Traffic", "Logon Session"],
+    "sub_techniques": [
+      "T1021.001 - Remote Desktop Protocol",
+      "T1021.002 - SMB/Windows Admin Shares",
+      "T1021.003 - Distributed Component Object Model",
+      "T1021.004 - SSH",
+      "T1021.005 - VNC"
+    ]
+  },
+  {
+    "id": "T1070",
+    "name": "Indicator Removal on Host",
+    "tactic": "Defense Evasion",
+    "description": "Adversaries may delete or alter generated artifacts on a host system, including logs or captured files such as quarantined malware. This may compromise the integrity of the security solution, causing events to go unreported.",
+    "detection": "Monitor for file deletion events, especially in log directories. Look for processes that clear event logs or modify timestamps on files.",
+    "mitigation": "Implement centralized logging that cannot be easily modified by local users. Use file integrity monitoring and backup systems for critical logs.",
+    "platforms": ["Windows", "macOS", "Linux"],
+    "data_sources": ["File", "Process", "Windows Event Logs"],
+    "sub_techniques": [
+      "T1070.001 - Clear Windows Event Logs",
+      "T1070.002 - Clear Linux or Mac System Logs",
+      "T1070.003 - Clear Command History",
+      "T1070.004 - File Deletion",
+      "T1070.006 - Timestomp"
+    ]
+  }
+]

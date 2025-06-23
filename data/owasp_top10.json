@@ -1,0 +1,157 @@
+[
+  {
+    "rank": 1,
+    "category": "Broken Access Control",
+    "description": "Access control enforces policy such that users cannot act outside of their intended permissions. Failures typically lead to unauthorized information disclosure, modification, or destruction of all data or performing a business function outside the user's limits.",
+    "impact": "Attackers can access unauthorized functionality and/or data, such as accessing other users' accounts, viewing sensitive files, modifying other users' data, changing access rights, etc.",
+    "prevention": "Implement proper access controls, use principle of least privilege, deny by default, implement access control mechanisms once and re-use them throughout the application, minimize CORS usage, log access control failures and alert admins when appropriate.",
+    "examples": [
+      "Violation of the principle of least privilege or deny by default",
+      "Bypassing access control checks by modifying the URL, internal application state, or the HTML page",
+      "Permitting viewing or editing someone else's account by providing its unique identifier",
+      "Accessing API with missing access controls for POST, PUT and DELETE",
+      "Elevation of privilege by acting as a user without being logged in or acting as an admin when logged in as a user"
+    ],
+    "cwe_mappings": ["CWE-22", "CWE-284", "CWE-285", "CWE-639", "CWE-59"],
+    "year": "2021"
+  },
+  {
+    "rank": 2,
+    "category": "Cryptographic Failures",
+    "description": "Previously known as Sensitive Data Exposure, this category focuses on failures related to cryptography (or lack thereof) which often leads to sensitive data exposure or system compromise.",
+    "impact": "Compromise of sensitive data such as personal health information, credentials, credit cards, and personal information requiring protection as defined by privacy laws or regulations.",
+    "prevention": "Classify data processed, stored, or transmitted by an application. Apply controls as per the classification. Don't store sensitive data unnecessarily. Store passwords using strong adaptive hashing functions. Use authenticated encryption instead of just encryption. Ensure cryptographic randomness is used appropriately.",
+    "examples": [
+      "Data transmitted in clear text protocols such as HTTP, SMTP, and FTP",
+      "Old or weak cryptographic algorithms or protocols are used by default or in older code",
+      "Default crypto keys are in use, weak crypto keys are generated or re-used",
+      "Encryption is not enforced during user agent connections",
+      "Server certificate and trust chain are not properly validated"
+    ],
+    "cwe_mappings": ["CWE-259", "CWE-327", "CWE-331"],
+    "year": "2021"
+  },
+  {
+    "rank": 3,
+    "category": "Injection",
+    "description": "An application is vulnerable to injection attacks when user-supplied data is not validated, filtered, or sanitized by the application, and hostile data is used within dynamic queries or commands without proper encoding.",
+    "impact": "Injection can result in data loss, corruption, or disclosure to unauthorized parties, loss of accountability, or denial of access. Injection can sometimes lead to complete host takeover.",
+    "prevention": "Use safe APIs that avoid the use of the interpreter entirely or provide a parameterized interface. Use positive or allow list server-side input validation. For any residual dynamic queries, escape special characters using the specific escape syntax for that interpreter.",
+    "examples": [
+      "SQL injection",
+      "NoSQL injection", 
+      "OS command injection",
+      "LDAP injection",
+      "Expression Language (EL) or Object Graph Navigation Library (OGNL) injection"
+    ],
+    "cwe_mappings": ["CWE-79", "CWE-89", "CWE-73", "CWE-77", "CWE-78"],
+    "year": "2021"
+  },
+  {
+    "rank": 4,
+    "category": "Insecure Design",
+    "description": "Insecure design is a broad category representing different weaknesses expressed as missing or ineffective control design. Insecure design is not the source for all other Top 10 risk categories.",
+    "impact": "Applications with insecure design cannot be fixed by perfect implementation as by definition, needed security controls were never created to defend against specific attacks.",
+    "prevention": "Establish and use a secure development lifecycle with AppSec professionals to help evaluate and design security and privacy-related controls. Establish and use a library of secure design patterns or paved road ready to use components.",
+    "examples": [
+      "A credential recovery workflow might include questions and answers which cannot assure the identity of the user",
+      "A cinema chain allows group booking discounts and has a maximum of fifteen attendees before requiring a deposit",
+      "A retail chain's e-commerce website does not have protection against bots run by scalpers buying high-end video cards"
+    ],
+    "cwe_mappings": ["CWE-209", "CWE-256", "CWE-501", "CWE-522"],
+    "year": "2021"
+  },
+  {
+    "rank": 5,
+    "category": "Security Misconfiguration", 
+    "description": "Security misconfiguration is commonly a result of insecure default configurations, incomplete or ad hoc configurations, open cloud storage, misconfigured HTTP headers, and verbose error messages containing sensitive information.",
+    "impact": "Such flaws frequently give attackers unauthorized access to some system data or functionality. Occasionally, such flaws result in a complete system compromise.",
+    "prevention": "Implement a repeatable hardening process that makes it fast and easy to deploy another environment that is properly locked down. Remove or do not install unused features and frameworks. Review and update configurations appropriate to all security notes, updates, and patches.",
+    "examples": [
+      "Missing appropriate security hardening across any part of the application stack",
+      "Improperly configured permissions on cloud services", 
+      "Default accounts and their passwords are still enabled and unchanged",
+      "Error handling reveals stack traces or other overly informative error messages to users",
+      "Latest security features are disabled or not configured securely"
+    ],
+    "cwe_mappings": ["CWE-16", "CWE-611"],
+    "year": "2021"
+  },
+  {
+    "rank": 6,
+    "category": "Vulnerable and Outdated Components",
+    "description": "Components such as libraries, frameworks, and other software modules run with the same privileges as the application. If a vulnerable component is exploited, such an attack can facilitate serious data loss or server takeover.",
+    "impact": "Impact ranges from minimal to complete host takeover and data compromise. Applications and APIs using components with known vulnerabilities may undermine application defenses and enable various attacks.",
+    "prevention": "Remove unused dependencies, unnecessary features, components, files, and documentation. Continuously inventory the versions of both client-side and server-side components and their dependencies. Monitor sources like Common Vulnerability and Exposures (CVE) and National Vulnerability Database (NVD).",
+    "examples": [
+      "Components that are out of date",
+      "Software that is unsupported or out of date including the OS, web/application server, database management system (DBMS), applications, APIs, and all components",
+      "Not scanning for vulnerabilities regularly and not subscribing to security bulletins",
+      "Not fixing or upgrading the underlying platform, frameworks, and dependencies in a risk-based, timely fashion"
+    ],
+    "cwe_mappings": ["CWE-1104"],
+    "year": "2021"
+  },
+  {
+    "rank": 7,
+    "category": "Identification and Authentication Failures",
+    "description": "Previously known as Broken Authentication, this category confirms the identity of the user, authentication, and session management is critical to protect against authentication-related attacks.",
+    "impact": "Attackers may compromise passwords, keys, or session tokens, or exploit other implementation flaws to assume other users' identities temporarily or permanently.",
+    "prevention": "Implement multi-factor authentication to prevent automated credential stuffing, brute force, and stolen credential reuse attacks. Do not ship or deploy with any default credentials. Implement weak password checks. Limit or increasingly delay failed login attempts.",
+    "examples": [
+      "Credential stuffing attacks where the attacker has a list of valid usernames and passwords",
+      "Brute force or other automated attacks", 
+      "Default, weak, or well-known passwords",
+      "Weak or ineffective credential recovery and forgot-password processes",
+      "Plain text, encrypted, or weakly hashed passwords"
+    ],
+    "cwe_mappings": ["CWE-297", "CWE-287", "CWE-384"],
+    "year": "2021"
+  },
+  {
+    "rank": 8,
+    "category": "Software and Data Integrity Failures",
+    "description": "Software and data integrity failures relate to code and infrastructure that does not protect against integrity violations. This includes applications that rely upon plugins, libraries, or modules from untrusted sources.",
+    "impact": "Attackers could potentially upload their own updates to be distributed and run on all installations. This is one of the worst possible impacts as it includes remote code execution across a substantial install base.",
+    "prevention": "Use digital signatures or similar mechanisms to verify the software or data is from the expected source and has not been altered. Ensure that your CI/CD pipeline has proper segregation, configuration, and access control to ensure the integrity of the code flowing through the build and deploy processes.",
+    "examples": [
+      "Auto-update without sufficient integrity verification",
+      "Insecure deserialization",
+      "Critical data is encoded or serialized into a structure that can be viewed and modified by an attacker",
+      "Applications that rely upon plugins, libraries, or modules from untrusted sources, repositories, and content delivery networks (CDNs)"
+    ],
+    "cwe_mappings": ["CWE-829", "CWE-494"],
+    "year": "2021"
+  },
+  {
+    "rank": 9,
+    "category": "Security Logging and Monitoring Failures",
+    "description": "This category helps detect, escalate, and respond to active breaches. Without logging and monitoring, breaches cannot be detected. Insufficient logging, detection, monitoring, and active response occurs any time.",
+    "impact": "Most successful attacks start with vulnerability probing. Allowing such probes to continue can raise the likelihood of successful exploit to nearly 100%. Insufficient monitoring allows attackers to persist and pivot to additional systems.",
+    "prevention": "Ensure all login, access control, and server-side input validation failures can be logged with sufficient user context to identify suspicious or malicious accounts. Ensure logs are generated in a format that log management solutions can easily consume.",
+    "examples": [
+      "Auditable events such as logins, failed logins, and high-value transactions are not logged",
+      "Warnings and errors generate no, inadequate, or unclear log messages", 
+      "Logs of applications and APIs are not monitored for suspicious activity",
+      "Logs are only stored locally",
+      "Penetration testing and scans by dynamic application security testing (DAST) tools do not trigger alerts"
+    ],
+    "cwe_mappings": ["CWE-117", "CWE-223", "CWE-532", "CWE-778"],
+    "year": "2021"
+  },
+  {
+    "rank": 10,
+    "category": "Server-Side Request Forgery (SSRF)",
+    "description": "SSRF flaws occur whenever a web application is fetching a remote resource without validating the user-supplied URL. It allows an attacker to coerce the application to send a crafted request to an unexpected destination.",
+    "impact": "Successful SSRF attacks can often result in unauthorized actions or access to data within the organization, either in the vulnerable application itself or on other back-end systems that the application can communicate with.",
+    "prevention": "Implement defense in depth controls such as network segmentation and allow lists for network traffic. Sanitize and validate all client-supplied input data. Enforce the URL schema, port, and destination with a positive allow list.",
+    "examples": [
+      "Port scan internal servers",
+      "Sensitive data exposure by accessing local files",
+      "Access metadata storage of cloud services",
+      "Compromise internal services"
+    ],
+    "cwe_mappings": ["CWE-918"],
+    "year": "2021"
+  }
+]
