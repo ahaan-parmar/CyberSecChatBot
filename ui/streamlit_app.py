@@ -280,7 +280,8 @@ def main():
             if 'messages' in st.session_state:
                 st.session_state.messages = []
             st.success("Conversation cleared!")
-            st.rebalance()
+            # Refresh the page to ensure the sidebar state resets
+            st.rerun()
         
         # Export conversation
         if st.button("💾 Export Conversation"):
