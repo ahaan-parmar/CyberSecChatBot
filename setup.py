@@ -4,12 +4,11 @@ Setup script for Cybersecurity Chatbot
 """
 
 from setuptools import setup, find_packages
-import os
+from pathlib import Path
 
-# Read the contents of README file
-this_directory = os.path.abspath(os.path.dirname(__file__))
-with open(os.path.join(this_directory, 'README.md'), encoding='utf-8') as f:
-    long_description = f.read()
+# Read the contents of README file if it exists
+readme_path = Path(__file__).with_name("README.md")
+long_description = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
 
 # Read requirements
 with open('requirements.txt') as f:
