@@ -90,7 +90,7 @@ class CybersecurityChatbot:
     def _get_help_response(self) -> Dict[str, Any]:
         """Get help information"""
         help_text = """
-🛡️ **Cybersecurity Chatbot Help**
+**Cybersecurity Chatbot Help**
 
 **Available Commands:**
 - `/help` - Show this help message
@@ -126,7 +126,7 @@ class CybersecurityChatbot:
         uptime = datetime.now() - self.session_stats["session_start"]
         
         stats_text = f"""
-📊 **Session Statistics**
+**Session Statistics**
 
 - **Queries Processed:** {self.session_stats["queries_processed"]}
 - **Session Duration:** {str(uptime).split('.')[0]}
@@ -146,19 +146,19 @@ class CybersecurityChatbot:
             vector_stats = self.rag_chain.vector_store.get_statistics()
             metadata = vector_stats.get("sources", {})
             
-            sources_text = "📚 **Available Data Sources:**\n\n"
+            sources_text = "**Available Data Sources:**\n\n"
             
             for source, count in metadata.items():
                 if source == "CVE":
-                    sources_text += f"🔍 **CVE Database:** {count} vulnerability records\n"
+                    sources_text += f"**CVE Database:** {count} vulnerability records\n"
                 elif source == "OWASP":
-                    sources_text += f"🛡️ **OWASP Guidelines:** {count} security categories\n"
+                    sources_text += f"**OWASP Guidelines:** {count} security categories\n"
                 elif source == "MITRE":
-                    sources_text += f"⚔️ **MITRE ATT&CK:** {count} attack techniques\n"
+                    sources_text += f"**MITRE ATT&CK:** {count} attack techniques\n"
                 elif source == "Exploits":
-                    sources_text += f"💥 **Exploit Database:** {count} exploit techniques\n"
+                    sources_text += f"**Exploit Database:** {count} exploit techniques\n"
                 else:
-                    sources_text += f"📄 **{source}:** {count} documents\n"
+                    sources_text += f"**{source}:** {count} documents\n"
             
             total_docs = vector_stats.get("total_documents", 0)
             sources_text += f"\n**Total Knowledge Base:** {total_docs} documents"
@@ -172,14 +172,14 @@ class CybersecurityChatbot:
         """Clear conversation history"""
         self.conversation_history.clear()
         return self._create_response(
-            "✅ Conversation history cleared.",
+            "Conversation history cleared.",
             response_type="system"
         )
     
     def _get_examples_response(self) -> Dict[str, Any]:
         """Get example queries"""
         examples_text = """
-💡 **Example Queries to Try:**
+**Example Queries to Try:**
 
 **CVE Vulnerabilities:**
 - "Tell me about CVE-2023-1234"
@@ -343,7 +343,7 @@ def main():
     Config.setup_logging()
     
     # Initialize chatbot
-    print("🛡️ Cybersecurity Chatbot")
+    print("Cybersecurity Chatbot")
     print("Type '/help' for commands or ask any cybersecurity question.")
     print("Type 'quit' to exit.")
     print("-" * 50)
@@ -352,10 +352,10 @@ def main():
     
     while True:
         try:
-            user_input = input("\n🔍 You: ").strip()
+            user_input = input("\nYou: ").strip()
             
             if user_input.lower() in ['quit', 'exit', 'bye']:
-                print("👋 Thank you for using the Cybersecurity Chatbot!")
+                print("Thank you for using the Cybersecurity Chatbot!")
                 break
             
             if not user_input:
@@ -365,22 +365,22 @@ def main():
             response = chatbot.chat(user_input)
             
             # Display response
-            print(f"\n🤖 Bot: {response['answer']}")
+            print(f"\nBot: {response['answer']}")
             
             if response.get("confidence"):
-                print(f"📊 Confidence: {response['confidence']} ({response.get('confidence_level', 'Unknown')})")
+                print(f"Confidence: {response['confidence']} ({response.get('confidence_level', 'Unknown')})")
             
             if response.get("sources_used"):
-                print(f"📚 Sources: {', '.join(response['sources_used'])}")
+                print(f"Sources: {', '.join(response['sources_used'])}")
             
             if response.get("response_time"):
-                print(f"⏱️ Response time: {response['response_time']}s")
+                print(f"Response time: {response['response_time']}s")
             
         except KeyboardInterrupt:
-            print("\n👋 Goodbye!")
+            print("\nGoodbye!")
             break
         except Exception as e:
-            print(f"❌ Error: {e}")
+            print(f"Error: {e}")
 
 if __name__ == "__main__":
     main()

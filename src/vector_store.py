@@ -3,8 +3,9 @@ import pickle
 from pathlib import Path
 from typing import List, Dict, Optional, Any
 from langchain.schema import Document
-from langchain.vectorstores import Chroma
-from langchain.embeddings import HuggingFaceEmbeddings, OpenAIEmbeddings
+from langchain_chroma import Chroma
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_community.embeddings import OpenAIEmbeddings
 from langchain.vectorstores.base import VectorStore
 from utils.config import Config
 from src.data_loader import CybersecurityDataLoader
@@ -193,8 +194,7 @@ class CybersecurityVectorStore:
             else:
                 results = self.vector_store.similarity_search_with_score(
                     query=query,
-                    k=k
-                )
+                    k=k                )
             
             logger.debug(f"Retrieved {len(results)} documents with scores for query: {query[:100]}...")
             return results
@@ -211,7 +211,10 @@ class CybersecurityVectorStore:
         
         default_kwargs = {"k": Config.RETRIEVAL_K}
         if search_kwargs:
-            default_kwargs.update(search_kwargs)
+            # Filter out unsupported parameters
+            supported_kwargs = {k: v for k, v in search_kwargs.items() 
+                              if k not in ['search_type']}
+            default_kwargs.update(supported_kwargs)
         
         return self.vector_store.as_retriever(search_kwargs=default_kwargs)
     

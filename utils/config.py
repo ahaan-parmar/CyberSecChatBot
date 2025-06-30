@@ -9,12 +9,12 @@ load_dotenv()
 
 class Config:
     """Configuration management for the cybersecurity chatbot"""
-    
-    # API Configuration
+      # API Configuration
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
     HUGGINGFACE_API_TOKEN = os.getenv("HUGGINGFACE_API_TOKEN")
     ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
     GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
     
     # Vector Store Configuration
     VECTOR_STORE_PATH = os.getenv("VECTOR_STORE_PATH", "./vector_store")
@@ -33,11 +33,11 @@ class Config:
     OWASP_DATA_PATH = os.getenv("OWASP_DATA_PATH", "./data/owasp_top10.json")
     MITRE_DATA_PATH = os.getenv("MITRE_DATA_PATH", "./data/mitre_attack.json")
     EXPLOIT_DATA_PATH = os.getenv("EXPLOIT_DATA_PATH", "./data/exploit_payloads.json")
-    
-    # Retrieval Configuration
+      # Retrieval Configuration
     RETRIEVAL_K = int(os.getenv("RETRIEVAL_K", "5"))
     CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", "1000"))
     CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "200"))
+    MAX_QUERY_LENGTH = int(os.getenv("MAX_QUERY_LENGTH", "1000"))
     
     # Application Settings
     DEBUG = os.getenv("DEBUG", "False").lower() == "true"
@@ -134,7 +134,7 @@ Guidelines:
 
 Context: {context}
 
-Question: {question}
+Question: {input}
 
 Answer:"""
 
@@ -170,6 +170,20 @@ MODEL_CONFIGS = {
     "claude-3-sonnet": {
         "provider": "anthropic",
         "max_tokens": 2048,
+        "temperature": 0.1
+    },    "gemini-1.5-flash": {
+        "provider": "gemini",
+        "max_tokens": 2048,
+        "temperature": 0.1
+    },
+    "gemini-1.5-pro": {
+        "provider": "gemini",
+        "max_tokens": 4096,
+        "temperature": 0.1
+    },
+    "gemini-2.0-flash": {
+        "provider": "gemini",
+        "max_tokens": 8192,
         "temperature": 0.1
     }
 }

@@ -16,106 +16,57 @@ from utils.config import Config
 
 # Page configuration
 st.set_page_config(
-    page_title="🛡️ Cybersecurity Chatbot",
-    page_icon="🛡️",
+    page_title=" SecChat",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
 # Custom CSS
-LIGHT_MODE_CSS = """
-.main-header {
-    font-size: 2.5rem;
-    color: #1f77b4;
-    text-align: center;
-    margin-bottom: 2rem;
-}
-.chat-message {
-    padding: 1rem;
-    border-radius: 0.5rem;
-    margin: 1rem 0;
-}
-.user-message {
-    background-color: #e8f4fd;
-    border-left: 4px solid #1f77b4;
-}
-.bot-message {
-    background-color: #f0f8f0;
-    border-left: 4px solid #28a745;
-}
-.confidence-high {
-    color: #28a745;
-    font-weight: bold;
-}
-.confidence-medium {
-    color: #ffc107;
-    font-weight: bold;
-}
-.confidence-low {
-    color: #dc3545;
-    font-weight: bold;
-}
-.source-tag {
-    display: inline-block;
-    background-color: #6c757d;
-    color: white;
-    padding: 0.2rem 0.5rem;
-    border-radius: 0.3rem;
-    margin: 0.1rem;
-    font-size: 0.8rem;
-}
-"""
-
-DARK_MODE_CSS = """
-body {
-    background-color: #0e1117;
-    color: #e0e0e0;
-}
-.main-header {
-    font-size: 2.5rem;
-    color: #90caf9;
-    text-align: center;
-    margin-bottom: 2rem;
-}
-.chat-message {
-    padding: 1rem;
-    border-radius: 0.5rem;
-    margin: 1rem 0;
-}
-.user-message {
-    background-color: #1f2d3d;
-    border-left: 4px solid #90caf9;
-}
-.bot-message {
-    background-color: #272822;
-    border-left: 4px solid #50fa7b;
-}
-.confidence-high {
-    color: #50fa7b;
-    font-weight: bold;
-}
-.confidence-medium {
-    color: #ffe082;
-    font-weight: bold;
-}
-.confidence-low {
-    color: #ff5252;
-    font-weight: bold;
-}
-.source-tag {
-    display: inline-block;
-    background-color: #6c757d;
-    color: white;
-    padding: 0.2rem 0.5rem;
-    border-radius: 0.3rem;
-    margin: 0.1rem;
-    font-size: 0.8rem;
-}
-"""
-
-def apply_theme(dark: bool = False):
-    css = DARK_MODE_CSS if dark else LIGHT_MODE_CSS
-    st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
+st.markdown("""
+<style>
+    .main-header {
+        font-size: 2.5rem;
+        color: #1f77b4;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    .chat-message {
+        padding: 1rem;
+        border-radius: 0.5rem;
+        margin: 1rem 0;
+    }
+    .user-message {
+        background-color: #e8f4fd;
+        border-left: 4px solid #1f77b4;
+    }
+    .bot-message {
+        background-color: #f0f8f0;
+        border-left: 4px solid #28a745;
+    }
+    .confidence-high {
+        color: #28a745;
+        font-weight: bold;
+    }
+    .confidence-medium {
+        color: #ffc107;
+        font-weight: bold;
+    }
+    .confidence-low {
+        color: #dc3545;
+        font-weight: bold;
+    }
+    .source-tag {
+        display: inline-block;
+        background-color: #6c757d;
+        color: white;
+        padding: 0.2rem 0.5rem;
+        border-radius: 0.3rem;
+        margin: 0.1rem;
+        font-size: 0.8rem;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 @st.cache_resource
 def initialize_chatbot():
@@ -131,7 +82,7 @@ def display_message(message: str, is_user: bool = False, metadata: Dict = None):
     if is_user:
         st.markdown(f"""
         <div class="chat-message user-message">
-            <strong>🔍 You:</strong> {message}
+            <strong> You:</strong> {message}
         </div>
         """, unsafe_allow_html=True)
     else:
@@ -147,7 +98,7 @@ def display_message(message: str, is_user: bool = False, metadata: Dict = None):
         
         st.markdown(f"""
         <div class="chat-message bot-message">
-            <strong>🤖 Cybersecurity Assistant:</strong><br>
+            <strong> Cybersecurity Assistant:</strong><br>
             {message}
         </div>
         """, unsafe_allow_html=True)
@@ -160,27 +111,27 @@ def display_message(message: str, is_user: bool = False, metadata: Dict = None):
                 if metadata.get("confidence"):
                     st.markdown(f"""
                     <span class="{confidence_class}">
-                        📊 Confidence: {metadata['confidence']} ({metadata.get('confidence_level', 'Unknown')})
+                         Confidence: {metadata['confidence']} ({metadata.get('confidence_level', 'Unknown')})
                     </span>
                     """, unsafe_allow_html=True)
             
             with col2:
                 if metadata.get("response_time"):
-                    st.markdown(f"⏱️ Response: {metadata['response_time']}s")
+                    st.markdown(f" Response: {metadata['response_time']}s")
             
             with col3:
                 if metadata.get("sources_used"):
                     sources_html = ""
                     for source in metadata["sources_used"]:
                         sources_html += f'<span class="source-tag">{source}</span>'
-                    st.markdown(f"Sources: {sources_html}", unsafe_allow_html=True)
+                    st.markdown(f" Sources: {sources_html}", unsafe_allow_html=True)
 
 def display_source_documents(documents: List):
     """Display source documents in an expandable section"""
     if not documents:
         return
     
-    with st.expander(f"📄 View Source Documents ({len(documents)} found)"):
+    with st.expander(f" View Source Documents ({len(documents)} found)"):
         for i, doc in enumerate(documents, 1):
             st.markdown(f"**Source {i}: {doc.metadata.get('source', 'Unknown')}**")
             
@@ -188,23 +139,23 @@ def display_source_documents(documents: List):
             metadata_cols = st.columns(4)
             with metadata_cols[0]:
                 if doc.metadata.get('cve_id'):
-                    st.markdown(f"CVE: `{doc.metadata['cve_id']}`")
+                    st.markdown(f" CVE: `{doc.metadata['cve_id']}`")
                 elif doc.metadata.get('technique_id'):
-                    st.markdown(f"MITRE: `{doc.metadata['technique_id']}`")
+                    st.markdown(f" MITRE: `{doc.metadata['technique_id']}`")
             
             with metadata_cols[1]:
                 if doc.metadata.get('severity'):
-                    st.markdown(f"Severity: `{doc.metadata['severity']}`")
+                    st.markdown(f" Severity: `{doc.metadata['severity']}`")
                 elif doc.metadata.get('risk_level'):
-                    st.markdown(f"Risk: `{doc.metadata['risk_level']}`")
+                    st.markdown(f" Risk: `{doc.metadata['risk_level']}`")
             
             with metadata_cols[2]:
                 if doc.metadata.get('doc_type'):
-                    st.markdown(f"Type: `{doc.metadata['doc_type']}`")
+                    st.markdown(f" Type: `{doc.metadata['doc_type']}`")
             
             with metadata_cols[3]:
                 if doc.metadata.get('cvss_score'):
-                    st.markdown(f"CVSS: `{doc.metadata['cvss_score']}`")
+                    st.markdown(f" CVSS: `{doc.metadata['cvss_score']}`")
             
             # Display content
             st.text_area(
@@ -218,7 +169,7 @@ def display_source_documents(documents: List):
 
 def create_statistics_dashboard(chatbot: CybersecurityChatbot):
     """Create statistics dashboard"""
-    st.subheader("📊 Session Statistics")
+    st.subheader(" Session Statistics")
     
     stats = chatbot.session_stats
     
@@ -240,7 +191,7 @@ def create_statistics_dashboard(chatbot: CybersecurityChatbot):
     
     # Sources usage chart
     if stats["sources_used"]:
-        st.subheader("📚 Data Sources Used")
+        st.subheader(" Data Sources Used")
         
         # Create a simple bar chart of sources
         sources_df = pd.DataFrame({
@@ -259,7 +210,7 @@ def create_statistics_dashboard(chatbot: CybersecurityChatbot):
     
     # Conversation history summary
     if chatbot.conversation_history:
-        st.subheader("💬 Conversation Analysis")
+        st.subheader(" Conversation Analysis")
         
         # Confidence distribution
         confidences = [entry.get('confidence', 0) for entry in chatbot.conversation_history]
@@ -310,15 +261,9 @@ def create_knowledge_base_info(chatbot: CybersecurityChatbot):
 
 def main():
     """Main Streamlit application"""
-
-    # Theme toggle
-    if 'dark_mode' not in st.session_state:
-        st.session_state.dark_mode = False
-
-    apply_theme(st.session_state.dark_mode)
-
+    
     # Header
-    st.markdown('<h1 class="main-header">🛡️ Cybersecurity Chatbot</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="main-header"> Cybersecurity Chatbot</h1>', unsafe_allow_html=True)
     st.markdown("**Your AI-powered cybersecurity knowledge assistant**")
     
     # Initialize chatbot
@@ -329,24 +274,16 @@ def main():
     # Sidebar
     with st.sidebar:
         st.header("🔧 Controls")
-
-        # Theme switch
-        dark = st.checkbox("🌙 Dark Mode", value=st.session_state.dark_mode)
-        if dark != st.session_state.dark_mode:
-            st.session_state.dark_mode = dark
-            apply_theme(dark)
-            st.rerun()
         
         # Clear conversation
-        if st.button("🗑️ Clear Conversation"):
+        if st.button(" Clear Conversation"):
             if 'messages' in st.session_state:
                 st.session_state.messages = []
             st.success("Conversation cleared!")
-            # Refresh the page to ensure the sidebar state resets
             st.rerun()
         
         # Export conversation
-        if st.button("💾 Export Conversation"):
+        if st.button(" Export Conversation"):
             if chatbot.conversation_history:
                 export_data = chatbot.export_conversation(format="json")
                 st.download_button(
@@ -361,21 +298,21 @@ def main():
         st.markdown("---")
         
         # Quick actions
-        st.header("⚡ Quick Actions")
+        st.header(" Quick Actions")
         
-        if st.button("📊 Show Statistics"):
+        if st.button(" Show Statistics"):
             st.session_state.show_stats = True
         
-        if st.button("📖 Knowledge Base Info"):
+        if st.button(" Knowledge Base Info"):
             st.session_state.show_kb_info = True
         
-        if st.button("💡 Show Examples"):
+        if st.button(" Show Examples"):
             st.session_state.show_examples = True
         
         st.markdown("---")
         
         # Filter options
-        st.header("🔍 Filter Options")
+        st.header(" Filter Options")
         source_filter = st.selectbox(
             "Filter by Source:",
             ["All", "CVE", "OWASP", "MITRE", "Exploits"],
@@ -387,9 +324,11 @@ def main():
             ["All", "vulnerability", "security_guidance", "attack_technique", "exploit_technique"],
             index=0
         )
-    
-    # Main content area
-    main_tab, stats_tab, kb_tab = st.tabs(["💬 Chat", "📊 Statistics", "📖 Knowledge Base"])
+      # Main content area
+    main_tab, stats_tab, kb_tab = st.tabs([" Chat", " Statistics", " Knowledge Base"])
+
+    # Chat input (must be outside tabs)
+    prompt = st.chat_input("Ask me about cybersecurity...")
     
     with main_tab:
         # Initialize chat history
@@ -407,14 +346,13 @@ def main():
             if message["role"] == "assistant" and message.get("source_documents"):
                 display_source_documents(message["source_documents"])
         
-        # Chat input
-        if prompt := st.chat_input("Ask me about cybersecurity..."):
+        # Handle chat input
+        if prompt:
             # Add user message
             st.session_state.messages.append({"role": "user", "content": prompt})
             display_message(prompt, is_user=True)
-            
-            # Get bot response
-            with st.spinner("🤔 Thinking..."):
+              # Get bot response
+            with st.spinner("Thinking..."):
                 # Apply filters if selected
                 if source_filter != "All" or doc_type_filter != "All":
                     source = source_filter if source_filter != "All" else None
@@ -454,7 +392,7 @@ def main():
         
         # Handle follow-up questions
         if hasattr(st.session_state, 'follow_up'):
-            st.chat_input = st.session_state.follow_up
+            # Rerun with follow-up question
             delattr(st.session_state, 'follow_up')
     
     with stats_tab:
@@ -476,19 +414,19 @@ def main():
         st.info("""
         **Example Questions to Try:**
         
-        🔍 **CVE Queries:**
+        **CVE Queries:**
         - "Tell me about CVE-2023-1234"
         - "What are SQL injection vulnerabilities?"
         
-        🛡️ **OWASP Questions:**
+        **OWASP Questions:**
         - "What is cross-site scripting?"
         - "How to prevent injection attacks?"
         
-        ⚔️ **MITRE ATT&CK:**
+        **MITRE ATT&CK:**
         - "What is privilege escalation?"
         - "How do lateral movement attacks work?"
         
-        💥 **Exploit Techniques:**
+        **Exploit Techniques:**
         - "How do buffer overflow attacks work?"
         - "What are common countermeasures?"
         """)

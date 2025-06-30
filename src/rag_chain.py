@@ -1,13 +1,14 @@
 import logging
 from typing import Dict, List, Optional, Any
-from langchain.llms import OpenAI
-from langchain.chat_models import ChatOpenAI
+from langchain_community.llms import OpenAI
+from langchain_community.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate, ChatPromptTemplate
 from langchain.chains import RetrievalQA
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains.retrieval import create_retrieval_chain
 from langchain.schema import BaseRetriever, Document
 from langchain.callbacks.base import BaseCallbackHandler
+import google.generativeai as genai
 from utils.config import Config, PromptTemplates, MODEL_CONFIGS
 from src.vector_store import CybersecurityVectorStore
 
@@ -60,10 +61,9 @@ class CybersecurityRAGChain:
                     max_tokens=Config.MAX_TOKENS,
                     openai_api_key=Config.OPENAI_API_KEY
                 )
-            
             elif model_config["provider"] == "anthropic":
                 # Import and configure Anthropic model
-                from langchain.chat_models import ChatAnthropic
+                from langchain_community.chat_models import ChatAnthropic
                 if not Config.ANTHROPIC_API_KEY:
                     raise ValueError("Anthropic API key is required")
                 
@@ -74,17 +74,28 @@ class CybersecurityRAGChain:
                     anthropic_api_key=Config.ANTHROPIC_API_KEY
                 )
             
+            elif model_config["provider"] == "gemini":
+                # Configure Gemini model
+                if not Config.GEMINI_API_KEY:
+                    raise ValueError("Gemini API key is required")
+                
+                genai.configure(api_key=Config.GEMINI_API_KEY)
+                
+                # Create a wrapper for Gemini to work with LangChain
+                return self._create_gemini_wrapper(model_name)
+            
             else:
                 raise ValueError(f"Unsupported model provider: {model_config['provider']}")
                 
         except Exception as e:
             logger.error(f"Error initializing LLM: {e}")
-            # Fallback to basic OpenAI model
-            return ChatOpenAI(
-                model_name="gpt-3.5-turbo",
-                temperature=0.1,
-                max_tokens=2048
-            )
+            # Fallback to Gemini if available, otherwise raise error
+            if Config.GEMINI_API_KEY:
+                logger.info("Falling back to Gemini 1.5 Flash")
+                genai.configure(api_key=Config.GEMINI_API_KEY)
+                return self._create_gemini_wrapper("gemini-1.5-flash")
+            else:
+                raise ValueError(f"Failed to initialize any LLM. Please configure at least one API key. Error: {e}")
     
     def _initialize_retriever(self) -> BaseRetriever:
         """Initialize document retriever"""
@@ -148,9 +159,8 @@ class CybersecurityRAGChain:
             
             # Process query
             logger.info(f"Processing query: {question[:100]}...")
-            
-            # Get context from retriever
-            retrieved_docs = self.retriever.get_relevant_documents(question)
+              # Get context from retriever
+            retrieved_docs = self.retriever.invoke(question)
             
             if not retrieved_docs:
                 return {
@@ -264,7 +274,7 @@ class CybersecurityRAGChain:
         try:
             # This is a simplified implementation
             # In a real system, you might maintain a database of common questions
-            retrieved_docs = self.retriever.get_relevant_documents(question)
+            retrieved_docs = self.retriever.invoke(question)
             
             # Extract potential question patterns from content
             similar_questions = []
@@ -314,6 +324,44 @@ class CybersecurityRAGChain:
                 explanations.append(f"{count} document(s) from {source}")
         
         return "This answer is based on: " + ", ".join(explanations) + "."
+
+    def _create_gemini_wrapper(self, model_name: str):
+        """Create a wrapper for Gemini model to work with LangChain"""
+        from langchain.llms.base import LLM
+        from pydantic import Field
+        
+        class GeminiLLM(LLM):
+            model_name: str = Field(default="gemini-1.5-flash")
+            temperature: float = Field(default=0.1)
+            max_tokens: int = Field(default=2048)
+            
+            def __init__(self, model_name: str = "gemini-1.5-flash", **kwargs):
+                super().__init__(model_name=model_name, **kwargs)
+            
+            @property
+            def _llm_type(self) -> str:
+                return "gemini"
+            
+            def _call(self, prompt: str, stop: Optional[List[str]] = None) -> str:
+                try:
+                    model = genai.GenerativeModel(self.model_name)
+                    
+                    generation_config = genai.types.GenerationConfig(
+                        temperature=self.temperature,
+                        max_output_tokens=self.max_tokens
+                    )
+                    
+                    response = model.generate_content(
+                        prompt,
+                        generation_config=generation_config
+                    )
+                    
+                    return response.text
+                except Exception as e:
+                    logger.error(f"Error calling Gemini API: {e}")
+                    return f"Error: Could not generate response from Gemini API - {str(e)}"
+        
+        return GeminiLLM(model_name=model_name)
 
 def main():
     """Main function to test the RAG chain"""
