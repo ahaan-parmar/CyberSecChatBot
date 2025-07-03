@@ -66,7 +66,7 @@ class CybersecurityChatbot:
                 response_type="error",
                 error=str(e)
             )
-      def _handle_command(self, command: str) -> Dict[str, Any]:
+    def _handle_command(self, command: str) -> Dict[str, Any]:
         """Handle special commands"""
         command = command.lower().strip()
         
@@ -119,7 +119,7 @@ class CybersecurityChatbot:
         """
         
         return self._create_response(help_text, response_type="help")
-      def _get_stats_response(self) -> Dict[str, Any]:
+    def _get_stats_response(self) -> Dict[str, Any]:
         """Get session statistics"""
         uptime = datetime.now() - self.session_stats["session_start"]
         
@@ -143,7 +143,7 @@ class CybersecurityChatbot:
         try:
             vector_stats = self.rag_chain.vector_store.get_statistics()
             metadata = vector_stats.get("sources", {})
-              sources_text = "**Available Data Sources:**\n\n"
+            sources_text = "**Available Data Sources:**\n\n"
             
             for source, count in metadata.items():
                 if source == "CVE":
@@ -164,14 +164,14 @@ class CybersecurityChatbot:
             sources_text = f"Error retrieving source information: {e}"
         
         return self._create_response(sources_text, response_type="sources")
-      def _clear_history(self) -> Dict[str, Any]:
+    def _clear_history(self) -> Dict[str, Any]:
         """Clear conversation history"""
         self.conversation_history.clear()
         return self._create_response(
             "Conversation history cleared.",
             response_type="system"
         )
-      def _get_examples_response(self) -> Dict[str, Any]:
+    def _get_examples_response(self) -> Dict[str, Any]:
         """Get example queries"""
         examples_text = """
 **Example Queries to Try:**
